@@ -1,0 +1,20 @@
+{
+  "extends": ["next/core-web-vitals", "prettier"],
+  "plugins": ["unused-imports", "simple-import-sort"],
+  "overrides": [
+    // Configuration for TypeScript files
+    {
+      "rules": {
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_" }
+        ],
+        "import/prefer-default-export": "off",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error"
+      },
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mts"]
+    }
+  ]
+}
