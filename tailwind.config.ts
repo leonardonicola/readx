@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
@@ -20,47 +19,38 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))"
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))"
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))"
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))"
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))"
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))"
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))"
-        }
-      },
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans]
+        main: "#ff6b6b",
+        mainAccent: "#ff3333", // not needed for shadcn components
+        overlay: "rgba(0,0,0,0.8)",
+        // background color overlay for alert dialogs, modals, etc.
+
+        // light mode
+        bg: "#fdfbf9",
+        text: "#000",
+        border: "#000",
+
+        // dark mode
+        darkBg: "#1D1F27",
+        darkText: "#eeefe9",
+        darkBorder: "#000"
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)"
+        base: "10px"
+      },
+      boxShadow: {
+        light: "3px 3px 0px 0px #000",
+        dark: "3px 3px 0px 0px #000"
+      },
+      translate: {
+        boxShadowX: "3px",
+        boxShadowY: "3px",
+        reverseBoxShadowX: "-3px",
+        reverseBoxShadowY: "-3px"
+      },
+      fontWeight: {
+        sans: "var(--font-sans)",
+        base: "500",
+        heading: "700"
       },
       keyframes: {
         "accordion-down": {

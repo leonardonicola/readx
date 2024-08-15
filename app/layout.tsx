@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Chivo } from "next/font/google";
 
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
 const fontSans = Chivo({
@@ -25,11 +26,12 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "bg-bg min-h-screen font-sans antialiased",
           fontSans.variable
         )}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

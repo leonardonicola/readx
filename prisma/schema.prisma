@@ -14,36 +14,17 @@ datasource db {
 }
 
 model User {
-  id          String      @id @default(uuid())
-  email       String      @unique
-  name        String      @db.VarChar(150)
-  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  id          String      @id
+  email       String      @unique @db.VarChar(250)
+  phoneNumber String?     @db.VarChar(20)
+  firstName   String      @db.VarChar(150)
+  lastName    String?     @db.VarChar(150)
+  created_at  DateTime    @default(now())
   deleted_at  DateTime?
   updated_at  DateTime?
-  chats1      Chat[]      @relation("ChatUserOne")
-  chats2      Chat[]      @relation("ChatUserTwo")
-  messages    Message[]
   bookshelves Bookshelf[]
-}
 
-model Chat {
-  id          String    @id @default(uuid())
-  user_one    User      @relation("ChatUserOne", fields: [user_one_id], references: [id])
-  user_two    User      @relation("ChatUserTwo", fields: [user_two_id], references: [id])
-  user_one_id String
-  user_two_id String
-  created_at  DateTime  @default(now()) @db.Timestamp(6)
-  messages    Message[]
-}
-
-model Message {
-  id         String   @id @default(uuid())
-  chat       Chat     @relation(fields: [chat_id], references: [id])
-  chat_id    String
-  creator    User     @relation(fields: [creator_id], references: [id])
-  creator_id String
-  content    String
-  created_at DateTime @default(now()) @db.Timestamp(6)
+  @@map("user")
 }
 
 model Bookshelf {
@@ -52,6 +33,8 @@ model Bookshelf {
   user_id String
   book    Book   @relation(fields: [book_id], references: [id], onDelete: Cascade)
   book_id String
+
+  @@map("bookshelf")
 }
 
 model Book {
@@ -61,12 +44,15 @@ model Book {
   author       String      @db.VarChar(150)
   genre        Genre       @relation(fields: [genre_id], references: [id])
   genre_id     Int
-  searchable   String      @default("") @ignore
   bookshelves  Bookshelf[]
+
+  @@map("book")
 }
 
 model Genre {
-  id    Int    @id @default(autoincrement())
-  name  String @db.VarChar(50)
-  books Book[]
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(50)
+  Book Book[]
+
+  @@map("genre")
 }

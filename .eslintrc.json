@@ -1,6 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "prettier"],
-  "plugins": ["unused-imports", "simple-import-sort"],
+  "extends": [
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": ["unused-imports", "simple-import-sort", "jsx-a11y"],
   "overrides": [
     // Configuration for TypeScript files
     {
