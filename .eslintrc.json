@@ -9,14 +9,28 @@
     // Configuration for TypeScript files
     {
       "rules": {
-        "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
+        "no-unused-vars": [
           "error",
-          { "argsIgnorePattern": "^_" }
+          {
+            "vars": "all",
+            "args": "after-used",
+            "caughtErrors": "all",
+            "ignoreRestSiblings": false,
+            "argsIgnorePattern": "^_",
+            "reportUsedIgnorePattern": false
+          }
         ],
-        "import/prefer-default-export": "off",
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error"
+        "sort-imports": [
+          "error",
+          {
+            "ignoreCase": false,
+            "ignoreDeclarationSort": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+            "allowSeparatedGroups": false
+          }
+        ],
+        "import/prefer-default-export": "off"
       },
       "files": ["**/*.ts", "**/*.tsx", "**/*.mts"]
     }
