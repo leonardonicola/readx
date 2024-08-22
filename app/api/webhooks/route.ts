@@ -2,6 +2,8 @@ import { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
 import { Webhook } from "svix";
 
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -37,8 +39,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature
     }) as WebhookEvent;
   } catch (err) {
-    console.error("Error verifying webhook:", err);
-    return new Response("Error occured", {
+    return NextResponse.json("Erro ao verificar Webhook com SVIX", {
       status: 400
     });
   }
@@ -54,12 +55,13 @@ export async function POST(req: Request) {
     user.phone_numbers.find(
       (phone) => phone.id === user.primary_phone_number_id
     )?.phone_number ?? "";
+
   switch (eventType) {
     // Created with ID provider
     case "user.created":
       // E-mail is always necessary!
       if (!userPrimaryEmail) {
-        return new Response("Email not found", {
+        return NextResponse.json("Email não encontrado", {
           status: 404
         });
       }
@@ -75,6 +77,8 @@ export async function POST(req: Request) {
       break;
     // Updated with Clerk <Profile/>
     case "user.updated":
+      revalidatePath("/profile", "page");
+      revalidatePath("/", "layout");
       await prisma.user.update({
         data: {
           firstName: user.first_name ?? user.id,
@@ -85,5 +89,5 @@ export async function POST(req: Request) {
       });
   }
 
-  return new Response("Sucessfully handled event.", { status: 200 });
+  return NextResponse.json("Sucessfully handled event.", { status: 200 });
 }
