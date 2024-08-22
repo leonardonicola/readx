@@ -1,6 +1,13 @@
-export default function Footer() {
+import { cn } from "@/lib/utils";
+
+export default function Footer({ className }: { className?: string }) {
   return (
-    <footer className="sticky top-[100dvh] border-t border-gray-300 py-8 text-center text-sm font-bold">
+    <footer
+      className={cn(
+        "sticky top-[100dvh] border-t border-gray-300 py-8 text-center text-sm font-bold",
+        className
+      )}
+    >
       © Copyright {new Date().getFullYear()} Readx.
     </footer>
   );
