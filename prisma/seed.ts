@@ -2,19 +2,19 @@ import prisma from "@/lib/db";
 
 async function main() {
   // Create genres
-  await prisma.genre.createManyAndReturn({
-    data: [
-      {
-        name: "Ficção Científica",
-        id: 1
-      },
-      { name: "Fantasia", id: 2 },
-      { name: "Sci-Fi", id: 3 },
-      { name: "Aventura", id: 4 },
-      { name: "Programação", id: 5 },
-      { name: "Culinária", id: 6 }
-    ]
-  });
+  const [fiction, _fantasy, _scifi, adventure, progamming, _kitchen] =
+    await prisma.genre.createManyAndReturn({
+      data: [
+        {
+          name: "Ficção Científica"
+        },
+        { name: "Fantasia" },
+        { name: "Sci-Fi" },
+        { name: "Aventura" },
+        { name: "Programação" },
+        { name: "Culinária" }
+      ]
+    });
 
   // Create books
   const [book1, book2, book3, book4] = await prisma.book.createManyAndReturn({
@@ -23,25 +23,25 @@ async function main() {
         title: "Dune",
         release_date: new Date("1965-08-01"),
         author: "Frank Herbert",
-        genre_id: 1
+        genre_id: fiction.id
       },
       {
         title: "The Hobbit",
         release_date: new Date("1937-09-21"),
         author: "J.R.R. Tolkien",
-        genre_id: 4
+        genre_id: adventure.id
       },
       {
         title: "Clean Code",
         release_date: new Date("2009-08-01"),
         author: "Robert C. Martin",
-        genre_id: 5
+        genre_id: progamming.id
       },
       {
         title: "1984",
         release_date: new Date("1965-08-01"),
         author: "George Orwell",
-        genre_id: 1
+        genre_id: fiction.id
       }
     ]
   });
@@ -49,7 +49,7 @@ async function main() {
   // Create users
   await prisma.user.upsert({
     where: {
-      email: "leonardonicolares@gmail.com"
+      email: "leonicola@hotmail.com"
     },
     update: {
       bookshelves: {
@@ -79,8 +79,9 @@ async function main() {
     },
     create: {
       id: "user_2hDMCBi0KJXPmV4avSx5RuFQBgn",
-      email: "leonardonicolares@gmail.com",
-      name: "Leonardo",
+      email: "leonicola@hotmail.com",
+      firstName: "Leonardo",
+      lastName: "Nicola",
       bookshelves: {
         create: [
           {
@@ -111,11 +112,13 @@ async function main() {
   console.log("Dev Database seeded successfully");
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+if (process.env.NODE_ENV === "development") {
+  main()
+    .catch((e) => {
+      console.error(e);
+      process.exit(1);
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
+    });
+}
