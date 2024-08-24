@@ -6,6 +6,7 @@ import { z } from "zod";
 import { Genres } from "@/app/(app)/(user)/bookshelf/page";
 import { createBookSchema } from "@/lib/schemas/bookshelf";
 
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -18,7 +19,6 @@ import {
 import { Separator } from "../ui/separator";
 import { AddToBookshelfForm } from "./forms/add-to-bookshelf";
 import { CreateBookForm } from "./forms/create-book";
-import { useBookshelfModalStore } from "./store";
 
 export type FormProtocol = UseFormReturn<z.output<typeof createBookSchema>>;
 
@@ -27,7 +27,8 @@ interface ModalProps {
 }
 
 export default function CreateBookModal({ genres }: ModalProps) {
-  const { isOpen, toggleOpen } = useBookshelfModalStore();
+
+  const [isOpen, toggleOpen] = useState<boolean>(false)
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => toggleOpen(open)}>
@@ -47,7 +48,7 @@ export default function CreateBookModal({ genres }: ModalProps) {
         </DialogHeader>
         <div className="w-full space-y-4">
           <p className="font-medium">Adicione um livro existente</p>
-          <AddToBookshelfForm />
+          <AddToBookshelfForm  toggleOpen={toggleOpen}/>
           <div className="relative">
             <Separator />
             <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg px-2 font-bold">
@@ -57,7 +58,7 @@ export default function CreateBookModal({ genres }: ModalProps) {
           <p className="font-medium">
             Crie um novo registro de livro em nosso sistema!
           </p>
-          <CreateBookForm genres={genres} />
+          <CreateBookForm toggleOpen={toggleOpen} genres={genres} />
         </div>
       </DialogContent>
     </Dialog>
