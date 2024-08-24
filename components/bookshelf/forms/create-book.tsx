@@ -30,11 +30,10 @@ import dayjs from "dayjs";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useBookshelfModalStore } from "../store";
 
-export function CreateBookForm({ genres }: { genres: Genres }) {
+
+export function CreateBookForm({ genres, toggleOpen }: { genres: Genres, toggleOpen: (state: boolean) => void}) {
   const { toast } = useToast();
-  const { toggleOpen } = useBookshelfModalStore();
   const { result, executeAsync, isExecuting, reset } = useAction(
     addBookToBookshelfWhileCreating
   );

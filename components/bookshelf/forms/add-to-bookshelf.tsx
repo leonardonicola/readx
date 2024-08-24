@@ -26,17 +26,15 @@ import { useAction } from "next-safe-action/hooks";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useBookshelfModalStore } from "../store";
 
 interface Option {
   value: string;
   label: string;
 }
 
-export function AddToBookshelfForm() {
+export function AddToBookshelfForm({toggleOpen}: {toggleOpen: (state: boolean) => void}) {
   const [options, setOptions] = useState<Option[]>([]);
   const { toast } = useToast();
-  const { toggleOpen } = useBookshelfModalStore();
   const { result, executeAsync, isExecuting } = useAction(addBookToBookshelf);
 
   const { hookFormValidationErrors } = useHookFormActionErrorMapper<
