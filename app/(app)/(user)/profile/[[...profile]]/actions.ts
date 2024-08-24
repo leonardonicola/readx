@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/lib/db";
+import { logger } from "@/lib/logger";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -26,7 +27,7 @@ export async function modifyEmail(email: EmailProtocol) {
     revalidatePath("/profile", "page");
     return { message: "E-mail alterado com sucesso!" };
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return {
       error: "Não foi possível modificar seu e-mail :("
     };
