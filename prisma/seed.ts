@@ -1,4 +1,5 @@
 import prisma from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 async function main() {
   // Create genres
@@ -109,13 +110,13 @@ async function main() {
     }
   });
 
-  console.log("Dev Database seeded successfully");
+  logger.info("Dev Database seeded successfully");
 }
 
 if (process.env.NODE_ENV === "development") {
   main()
     .catch((e) => {
-      console.error(e);
+      logger.error(e);
       process.exit(1);
     })
     .finally(async () => {

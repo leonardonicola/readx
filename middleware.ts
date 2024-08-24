@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { logger } from "./lib/logger";
 
 const isPublicRoute = createRouteMatcher([
   "/login(.*)",
@@ -8,6 +9,8 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
+  const logData = `[Request Url: ${req.url} — HOST ${req.headers.get('Host')} — Agent: ${req.headers.get('User-Agent')}`
+  logger.info(logData);
   if (!isPublicRoute(req)) auth().protect();
 });
 
