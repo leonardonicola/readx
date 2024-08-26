@@ -1,10 +1,9 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-
 import { EditEmail } from "@/components/profile/edit-email";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 async function UserProfilePage() {
   const userFromClerk = await currentUser();

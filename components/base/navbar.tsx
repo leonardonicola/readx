@@ -1,9 +1,8 @@
+import { cn } from "@/lib/utils";
 import { SignOutButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { Book, BookIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
-
-import { cn } from "@/lib/utils";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
