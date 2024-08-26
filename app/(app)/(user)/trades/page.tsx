@@ -12,7 +12,7 @@ import { searchTrades } from "@/lib/api/bookshelf";
 export default async function Trades({
   searchParams
 }: {
-  [key: string]: { search: string };
+  searchParams: { search: string };
 }) {
   const { trades } = await searchTrades(searchParams.search);
 
