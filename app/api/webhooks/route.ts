@@ -1,9 +1,8 @@
-import { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
-import { Webhook } from "svix";
-
 import prisma from "@/lib/db";
+import { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
+import { Webhook } from "svix";
 
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;

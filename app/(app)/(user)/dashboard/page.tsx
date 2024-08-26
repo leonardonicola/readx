@@ -1,6 +1,5 @@
-import { currentUser } from "@clerk/nextjs/server";
-
 import Search from "@/components/dashboard/search";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function Dashboard() {
   const user = await currentUser();

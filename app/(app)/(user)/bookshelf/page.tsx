@@ -1,8 +1,7 @@
-import { Prisma } from "@prisma/client";
-
 import CreateBookModal from "@/components/bookshelf/create-modal";
 import BookshelfFeed from "@/components/bookshelf/feed";
 import { getGenres } from "@/lib/api/genres";
+import { Prisma } from "@prisma/client";
 
 export type Bookshelfs = Array<
   Prisma.BookshelfGetPayload<{
