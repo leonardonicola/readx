@@ -1,9 +1,8 @@
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-
 import prisma from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 async function getUserBookshelf() {
   try {
