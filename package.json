@@ -63,6 +63,7 @@
     "eslint-config-next": "14.2.6",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-perfectionist": "^3.2.0",
     "pino-pretty": "^11.2.2",
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",

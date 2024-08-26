@@ -4,32 +4,12 @@
     "prettier",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["unused-imports", "simple-import-sort", "jsx-a11y"],
+  "plugins": ["jsx-a11y", "perfectionist"],
   "overrides": [
     // Configuration for TypeScript files
     {
       "rules": {
-        "no-unused-vars": [
-          "error",
-          {
-            "vars": "all",
-            "args": "after-used",
-            "caughtErrors": "all",
-            "ignoreRestSiblings": false,
-            "argsIgnorePattern": "^_",
-            "reportUsedIgnorePattern": false
-          }
-        ],
-        "sort-imports": [
-          "error",
-          {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": false
-          }
-        ],
+        "perfectionist/sort-imports": "error",
         "import/prefer-default-export": "off"
       },
       "files": ["**/*.ts", "**/*.tsx", "**/*.mts"]
