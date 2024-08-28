@@ -67,9 +67,9 @@ async function searchTrades(search: string) {
         ]
       },
       include: {
-        user: { select: { firstName: true, id: true } },
+        user: { select: { firstName: true } },
         book: {
-          select: { title: true, id: true, release_date: true, author: true }
+          select: { title: true, release_date: true, author: true }
         }
       }
     });
@@ -78,8 +78,7 @@ async function searchTrades(search: string) {
     };
   } catch (error) {
     return {
-      error: (error as Error).message,
-      trades: []
+      error: "Não foi possível listar ofertas!"
     };
   }
 }
