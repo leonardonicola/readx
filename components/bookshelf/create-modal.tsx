@@ -2,7 +2,7 @@
 import { Genres } from "@/app/(app)/(user)/bookshelf/page";
 import { createBookSchema } from "@/lib/schemas/bookshelf";
 import { PlusCircle } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,9 +25,8 @@ interface ModalProps {
   genres: Genres;
 }
 
-export default function CreateBookModal({ genres }: ModalProps) {
-
-  const [isOpen, toggleOpen] = useState<boolean>(false)
+const CreateBookModal = React.memo(({ genres }: ModalProps) => {
+  const [isOpen, toggleOpen] = useState<boolean>(false);
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => toggleOpen(open)}>
@@ -47,7 +46,7 @@ export default function CreateBookModal({ genres }: ModalProps) {
         </DialogHeader>
         <div className="w-full space-y-4">
           <p className="font-medium">Adicione um livro existente</p>
-          <AddToBookshelfForm  toggleOpen={toggleOpen}/>
+          <AddToBookshelfForm toggleOpen={toggleOpen} />
           <div className="relative">
             <Separator />
             <p className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg px-2 font-bold">
@@ -62,4 +61,8 @@ export default function CreateBookModal({ genres }: ModalProps) {
       </DialogContent>
     </Dialog>
   );
-}
+});
+
+CreateBookModal.displayName = "CreateBookModal";
+
+export default CreateBookModal;
