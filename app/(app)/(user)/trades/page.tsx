@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { StartConversation } from "@/components/trades/start-conversation";
 import {
   Card,
   CardContent,
@@ -14,11 +14,19 @@ export default async function Trades({
 }: {
   searchParams: { search: string };
 }) {
-  const { trades } = await searchTrades(searchParams.search);
+  const { trades, error } = await searchTrades(searchParams.search);
+  if (error) {
+    return (
+      <div className="space-y-6 p-4">
+        <h1>Ooopss...</h1>
+        <h2>{error}</h2>
+      </div>
+    );
+  }
 
   return (
     <>
-      {trades && (
+      {trades?.length ? (
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {trades.map((trade) => (
             <Card
@@ -34,23 +42,25 @@ export default async function Trades({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <p className="w-full">
-                    O usuário{" "}
-                    <p className="max-w-sm truncate font-semibold">
+                  <div className="w-full">
+                    <span className="max-w-sm truncate font-semibold">
                       {trade.user.firstName}
-                    </p>{" "}
+                    </span>{" "}
                     tem o livro {trade.book.title} disponível para troca!
-                  </p>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button>Contatar</Button>
+                <StartConversation
+                  bookId={trade.book_id}
+                  bookTitle={trade.book.title}
+                  userId={trade.user_id}
+                />
               </CardFooter>
             </Card>
           ))}
         </section>
-      )}
-      {trades.length === 0 && (
+      ) : (
         <h1>Nenhuma trade disponível para o livro desejado!</h1>
       )}
     </>

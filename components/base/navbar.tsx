@@ -32,7 +32,7 @@ export default async function Navbar({ className }: NavbarProps) {
   return (
     <header
       className={cn(
-        "bg-secondary flex h-20 w-full items-center justify-center border-b-2 border-black",
+        "bg-secondary flex h-20 w-full items-center justify-center border-b-2 border-black py-4",
         className
       )}
     >
@@ -97,6 +97,9 @@ export default async function Navbar({ className }: NavbarProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile">Perfil</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/chat">Chats</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/bookshelf">Estante</Link>
