@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test:integration": "dotenv -e .env -- ./scripts/run-integration.sh",
+    "test:unit": "vitest --project unit",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
-    "migrate:dev": "dotenv -e .env.local -e .env -- npx prisma migrate dev",
+    "migrate:dev": "dotenv -e .env.local -e .env -- pnpm prisma migrate dev",
     "seed": "NODE_ENV=development tsx prisma/seed.ts"
   },
   "dependencies": {
@@ -57,15 +59,19 @@
   },
   "devDependencies": {
     "@clerk/types": "^4.14.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.0.1",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.6",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "eslint-plugin-perfectionist": "^3.2.0",
+    "jsdom": "^25.0.0",
     "pino-pretty": "^11.2.2",
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
@@ -73,6 +79,8 @@
     "prisma": "^5.18.0",
     "tailwindcss": "^3.4.10",
     "tsx": "^4.17.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5",
+    "vitest-mock-extended": "^2.0.2"
   }
 }
