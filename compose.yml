@@ -2,11 +2,11 @@ services:
   postgres:
     image: postgres
     environment:
-      POSTGRES_DB: readx
-      POSTGRES_USER: popinjay
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U popinjay -d readx'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U $$DB_USER -d $$DB_NAME'"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -14,5 +14,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    container_name: ${DB_NAME}
 volumes:
   pgdata:
