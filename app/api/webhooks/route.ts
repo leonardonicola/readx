@@ -1,5 +1,7 @@
 import prisma from "@/lib/db";
+import { logger } from "@/lib/logger";
 import { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
+import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { Webhook } from "svix";
@@ -8,9 +10,10 @@ export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
-    throw new Error(
-      "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
-    );
+    const ERROR_MSG =
+      "Please add WEBHOOK_SECRET from Clerk Dashboard to your environment variables";
+    logger.error(ERROR_MSG);
+    return NextResponse.json(ERROR_MSG, { status: 500 });
   }
 
   // Get the Svix headers
@@ -25,7 +28,8 @@ export async function POST(req: Request) {
   try {
     wh = new Webhook(WEBHOOK_SECRET);
   } catch (error) {
-    throw new Error("WEBHOOK_SECRET isn't valid");
+    logger.error(error);
+    return NextResponse.json("WEBHOOK_SECRET isn't valid", { status: 500 });
   }
 
   let evt: WebhookEvent;
@@ -38,7 +42,8 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature
     }) as WebhookEvent;
   } catch (err) {
-    return NextResponse.json("Erro ao verificar Webhook com SVIX", {
+    logger.error(err);
+    return NextResponse.json("Error while verifying webhook signature", {
       status: 400
     });
   }
@@ -49,44 +54,52 @@ export async function POST(req: Request) {
     (infos) => infos.id === user.primary_email_address_id
   )?.email_address;
 
-  // Phone number isn't always necessary, because user could receive trades offers by email too
-  const userPhoneNumber =
-    user.phone_numbers.find(
-      (phone) => phone.id === user.primary_phone_number_id
-    )?.phone_number ?? "";
-
-  switch (eventType) {
-    // Created with ID provider
-    case "user.created":
-      // E-mail is always necessary!
-      if (!userPrimaryEmail) {
-        return NextResponse.json("Email não encontrado", {
-          status: 404
-        });
-      }
-      await prisma.user.create({
-        data: {
-          email: userPrimaryEmail,
-          firstName: user.first_name ?? user.id,
-          lastName: user.last_name,
-          id: user.id,
-          phoneNumber: userPhoneNumber
-        }
-      });
-      break;
-    // Updated with Clerk <Profile/>
-    case "user.updated":
-      revalidatePath("/profile", "page");
-      revalidatePath("/", "layout");
-      await prisma.user.update({
-        data: {
-          firstName: user.first_name ?? user.id,
-          lastName: user.last_name,
-          phoneNumber: userPhoneNumber
-        },
-        where: { id: user.id }
-      });
+  // E-mail is always necessary!
+  if (!userPrimaryEmail) {
+    return NextResponse.json("Email não encontrado", {
+      status: 422
+    });
   }
 
+  try {
+    switch (eventType) {
+      // Created with ID provider
+      case "user.created":
+        await prisma.user.create({
+          data: {
+            email: userPrimaryEmail,
+            firstName: user.first_name ?? user.id,
+            lastName: user.last_name,
+            id: user.id
+          }
+        });
+        break;
+      // Updated with Clerk <Profile/>
+      case "user.updated":
+        await prisma.user.update({
+          data: {
+            firstName: user.first_name ?? user.id,
+            lastName: user.last_name ?? "",
+            updated_at: dayjs().toISOString()
+          },
+          where: { id: user.id }
+        });
+        break;
+      case "user.deleted":
+        await prisma.user.update({
+          data: { deleted_at: dayjs().toISOString() },
+          where: { id: user.id }
+        });
+    }
+  } catch (error) {
+    logger.error(error);
+    return NextResponse.json("Error while handling user event", {
+      status: 500
+    });
+  }
+
+  revalidatePath("/profile", "page");
+  revalidatePath("/", "layout");
+  logger.info("HANDLED USER WEBHOOK");
   return NextResponse.json("Sucessfully handled event.", { status: 200 });
 }
