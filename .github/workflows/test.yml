@@ -22,7 +22,7 @@ jobs:
       - name: Run unit tests
         run: pnpm test:unit
 env:
-  DATABASE_URL: postgres://readx:SuperSecret123@localhost:5432/readx_db
-  DB_USER: readx
-  DB_NAME: readx_db
+  DATABASE_URL: postgres://admin:SuperSecret123@localhost:5432/readx
+  DB_USER: admin
+  DB_NAME: readx
   DB_PASS: SuperSecret123
