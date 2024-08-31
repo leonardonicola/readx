@@ -7,7 +7,8 @@ export default defineWorkspace([
     test: {
       name: "unit",
       environment: "jsdom",
-      include: ["tests/unit/**/*.spec.{ts,tsx,js,jsx}"]
+      include: ["tests/unit/**/*.spec.{ts,tsx,js,jsx}"],
+      setupFiles: ["tests/unit/setup.ts"]
     }
   },
   {
