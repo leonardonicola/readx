@@ -8,14 +8,9 @@ import { usePathname } from "next/navigation";
 interface ContactButtonProps {
   chatId: string;
   contactName: string;
-  lastMessage: string;
 }
 
-export function ContactButton({
-  chatId,
-  contactName,
-  lastMessage
-}: ContactButtonProps) {
+export function ContactButton({ chatId, contactName }: ContactButtonProps) {
   const pathname = usePathname();
 
   return (
@@ -28,7 +23,6 @@ export function ContactButton({
     >
       <UserCircle2Icon className="h-8 w-8" />
       <p className="font-bold">{contactName}</p>
-      <p className="text-sm font-light">{lastMessage}</p>
     </Link>
   );
 }
