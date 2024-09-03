@@ -2,34 +2,39 @@
 
 import useConversation from "@/hooks/useConversation";
 import { pusherClient } from "@/lib/pusher/client";
-import { cn } from "@/lib/utils";
+import { cn, defaultFetch } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { Prisma } from "@prisma/client";
-import { useEffect, useRef, useState } from "react";
+import { Message as PrismaMessage } from "@prisma/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Loader } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 
-type Message = Prisma.MessageGetPayload<{
-  select: {
-    id: true;
-    user_id: true;
-    content: true;
-  };
-}>;
+type Message = Pick<PrismaMessage, "id" | "content" | "user_id">;
 
-export function Messages({
-  initialMessages
-}: {
-  initialMessages: Array<Message>;
-}) {
+export function Messages() {
   const { conversationId } = useConversation();
+  const queryClient = useQueryClient();
   const { user } = useUser();
-  const [messages, setMessages] = useState(initialMessages);
-  const endDivRef = useRef<HTMLDivElement | null>(null);
+  const {
+    isLoading,
+    isError,
+    error,
+    data: messages = []
+  } = useQuery<Message[]>({
+    queryKey: ["messages", conversationId],
+    retry: false,
+    queryFn: async () => await defaultFetch(`/chat/${conversationId}/api`),
+    enabled: !!user
+  });
+  const boxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     pusherClient.subscribe(conversationId);
     pusherClient.bind("messages:new", (message: Message) => {
-      setMessages((prev) => [...prev, message]);
-      endDivRef.current?.scrollIntoView({ behavior: "smooth" });
+      queryClient.setQueryData(
+        ["messages", conversationId],
+        (prev: Message[]) => [...prev, message]
+      );
     });
 
     return () => {
@@ -38,9 +43,20 @@ export function Messages({
     };
   }, [conversationId]);
 
+  useLayoutEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages, user?.id]);
+
+  if (isLoading || !user) return <Loader />;
+  if (isError) {
+    return <h3>{error.message}</h3>;
+  }
+
   return (
-    <section className="w-full flex-1 space-y-4 overflow-y-auto">
-      {messages && messages.length ? (
+    <section className="flex h-full w-full flex-col gap-4 overflow-y-auto">
+      {messages.length > 0 ? (
         messages.map((message) => (
           <div
             key={message.id}
@@ -55,7 +71,7 @@ export function Messages({
       ) : (
         <h3>Nenhuma conversa!</h3>
       )}
-      <div ref={endDivRef} />
+      <div ref={boxRef}></div>
     </section>
   );
 }
