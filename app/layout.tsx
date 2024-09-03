@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import "@/styles/globals.css";
 import { Chivo } from "next/font/google";
 
+import Providers from "./providers";
+
 const fontSans = Chivo({
   subsets: ["latin"],
   variable: "--font-sans"
@@ -29,7 +31,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
