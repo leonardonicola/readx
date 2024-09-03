@@ -1,7 +1,8 @@
 import { ChatAside } from "@/components/chat/aside";
-import { Loader } from "lucide-react";
+import { currentUser } from "@clerk/nextjs/server";
 import { Metadata } from "next";
-import { Suspense } from "react";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   description: "Suas conversas recentes."
@@ -12,12 +13,15 @@ export default async function ChatLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const user = await currentUser();
+  if (!user) {
+    revalidatePath("/", "layout");
+    redirect("/login");
+  }
   return (
-    <div className="flex h-full max-h-[calc(100%-theme(spacing.32))] w-full">
+    <div className="flex h-full max-h-[calc(100dvh-theme(spacing.32))] min-h-[calc(100dvh-theme(spacing.32))] w-full">
       <aside className="flex h-full w-1/4 flex-col items-center gap-4 border-2">
-        <Suspense fallback={<Loader className="animate-spin"></Loader>}>
-          <ChatAside />
-        </Suspense>
+        <ChatAside />
       </aside>
       <section className="h-full w-3/4 border-y-2 border-r-2">
         {children}
