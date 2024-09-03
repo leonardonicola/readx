@@ -1,7 +1,6 @@
 import PusherServer from "pusher";
 import { z } from "zod";
 
-import { PUSHER_CLUSTER } from ".";
 import { serverPusherEnv } from "../schemas/env";
 
 const { PUSHER_ID, PUSHER_KEY, PUSHER_SECRET } = serverPusherEnv.parse({
@@ -13,6 +12,9 @@ const { PUSHER_ID, PUSHER_KEY, PUSHER_SECRET } = serverPusherEnv.parse({
 export const pusherServer = new PusherServer({
   appId: PUSHER_ID,
   key: PUSHER_KEY,
-  cluster: PUSHER_CLUSTER,
+  cluster: "",
+  host: "127.0.0.1",
+  port: "6001",
+  useTLS: false,
   secret: PUSHER_SECRET
 });
