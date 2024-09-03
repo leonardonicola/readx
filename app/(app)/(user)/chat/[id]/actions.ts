@@ -33,6 +33,7 @@ export const sendMessage = actionClient
         "messages:new",
         newMessage
       );
+      return { message: newMessage };
     } catch (error) {
       logger.error(error);
       return { error: "Não foi possível enviar a mensagem" };
