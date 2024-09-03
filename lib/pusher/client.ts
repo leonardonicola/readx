@@ -1,7 +1,6 @@
 import PusherClient from "pusher-js";
 import { z } from "zod";
 
-import { PUSHER_CLUSTER } from ".";
 import { clientPusherEnv } from "../schemas/env";
 
 const { PUSHER_KEY } = clientPusherEnv.parse({
@@ -9,8 +8,10 @@ const { PUSHER_KEY } = clientPusherEnv.parse({
 } as z.infer<typeof clientPusherEnv>);
 
 export const pusherClient = new PusherClient(PUSHER_KEY, {
-  cluster: PUSHER_CLUSTER
-});
-pusherClient.connection.bind("state_change", (states: any) => {
-  console.log("Pusher state changed: ", states);
+  cluster: "",
+  wsHost: "127.0.0.1",
+  wsPort: 6001,
+  forceTLS: false,
+  disableStats: true,
+  enabledTransports: ["ws", "wss"]
 });
