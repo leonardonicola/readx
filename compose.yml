@@ -15,6 +15,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     container_name: ${DB_NAME}
+    profiles: [db-only, default]
   soketi:
     image: quay.io/soketi/soketi:1.4-16-debian
     ports:
@@ -26,5 +27,6 @@ services:
       SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
       SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
       SOKETI_DEFAULT_APP_MAX_CONNS: 50
+    profiles: [default]
 volumes:
   pgdata:

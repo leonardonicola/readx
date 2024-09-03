@@ -3,7 +3,7 @@
 # Inject env variables into docker compose
 DIR="$(cd "$(dirname "$0")" && pwd)"
 source $DIR/setenv.sh
-docker-compose up --build -d
+docker-compose --profile db-only up --build -d
 echo '🟡 - Waiting for database to be ready...'
 while [ "`docker inspect -f {{.State.Health.Status}} ${DB_NAME}`" != "healthy" ]; do     sleep 2; done
 echo '🟢 - Database is ready!'
