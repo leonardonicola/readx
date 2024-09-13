@@ -11,7 +11,7 @@
     "test:integration": "./scripts/run-integration.sh",
     "test:unit": "vitest --project unit",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
-    "migrate:dev": "dotenv -e .env.local -e .env -- pnpm prisma migrate dev",
+    "migrate:dev": "dotenv -e .env.local -e .env -- pnpm dlx prisma migrate dev",
     "migrate:prod": "pnpm dlx prisma migrate deploy && pnpm start:prod",
     "seed": "NODE_ENV=development tsx prisma/seed.ts"
   },
