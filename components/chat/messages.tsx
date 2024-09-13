@@ -1,15 +1,14 @@
 "use client";
 
+import type { MessageBase } from "@/lib/api/chat/dto";
+
 import useConversation from "@/hooks/useConversation";
 import { pusherClient } from "@/lib/pusher/client";
 import { cn, defaultFetch } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { Message as PrismaMessage } from "@prisma/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef } from "react";
-
-type Message = Pick<PrismaMessage, "id" | "content" | "user_id">;
 
 export function Messages() {
   const { conversationId } = useConversation();
@@ -20,20 +19,21 @@ export function Messages() {
     isError,
     error,
     data: messages = []
-  } = useQuery<Message[]>({
+  } = useQuery({
     queryKey: ["messages", conversationId],
     retry: false,
-    queryFn: async () => await defaultFetch(`/chat/${conversationId}/api`),
+    queryFn: async () =>
+      await defaultFetch<MessageBase[]>(`/chat/${conversationId}/api`),
     enabled: !!user
   });
   const boxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     pusherClient.subscribe(conversationId);
-    pusherClient.bind("messages:new", (message: Message) => {
+    pusherClient.bind("messages:new", (message: MessageBase[]) => {
       queryClient.setQueryData(
         ["messages", conversationId],
-        (prev: Message[]) => [...prev, message]
+        (prev: Array<{}>) => [...prev, message]
       );
     });
 

@@ -3,7 +3,7 @@
 import { sendMessage } from "@/app/(app)/(user)/chat/[id]/actions";
 import useConversation from "@/hooks/useConversation";
 import { cn } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { SendHorizonalIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import React, { useState } from "react";
@@ -17,7 +17,6 @@ export function SendMessageInput({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [content, setContent] = useState<string>("");
-  const queryClient = useQueryClient();
   const { conversationId } = useConversation();
   const { toast } = useToast();
   const { executeAsync } = useAction(sendMessage);

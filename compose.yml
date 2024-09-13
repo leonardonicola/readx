@@ -1,4 +1,16 @@
 services:
+  app:
+    container_name: readx_app
+    image: leonardonicola/readx:1.0.0
+    build: .
+    env_file:
+      - .env.prod
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+      - soketi
+    profiles: [default]
   postgres:
     image: postgres:16.4
     environment:
@@ -22,7 +34,6 @@ services:
       - "6001:6001"
       - "9601:9601"
     environment:
-      SOKETI_DEBUG: 1
       SOKETI_DEFAULT_APP_ID: ${PUSHER_ID}
       SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
       SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
