@@ -4,17 +4,8 @@ import { logger } from "@/lib/logger";
 async function main() {
   // Create genres
   const [fiction, _fantasy, _scifi, adventure, progamming, _kitchen] =
-    await prisma.genre.createManyAndReturn({
-      data: [
-        {
-          name: "Ficção Científica"
-        },
-        { name: "Fantasia" },
-        { name: "Sci-Fi" },
-        { name: "Aventura" },
-        { name: "Programação" },
-        { name: "Culinária" }
-      ]
+    await prisma.genre.findMany({
+      select: { id: true }
     });
 
   // Create books
@@ -47,87 +38,70 @@ async function main() {
     ]
   });
 
-  await Promise.all([
-    prisma.user.upsert({
-      where: {
-        email: "leonardonicolares@gmail.com"
-      },
-      update: {
-        bookshelves: {
-          create: [
-            {
-              book: {
-                connect: { id: book1.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book3.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book4.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book2.id }
-              }
+  prisma.user.upsert({
+    where: {
+      email: "leonardonicolares@gmail.com"
+    },
+    update: {
+      bookshelves: {
+        create: [
+          {
+            book: {
+              connect: { id: book1.id }
             }
-          ]
-        }
-      },
-      create: {
-        id: "user_2hDMCBi0KJXPmV4avSx5RuFQBgn",
-        email: "leonardonicolares@gmail.com",
-        firstName: "Leonardo",
-        lastName: "Nicola",
-        bookshelves: {
-          create: [
-            {
-              book: {
-                connect: { id: book1.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book3.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book4.id }
-              }
-            },
-            {
-              book: {
-                connect: { id: book2.id }
-              }
+          },
+          {
+            book: {
+              connect: { id: book3.id }
             }
-          ]
-        }
+          },
+          {
+            book: {
+              connect: { id: book4.id }
+            }
+          },
+          {
+            book: {
+              connect: { id: book2.id }
+            }
+          }
+        ]
       }
-    }),
-    prisma.user.upsert({
-      where: {
-        email: "leonicola@hotmail.com"
-      },
-      update: {
-        bookshelves: { create: { book: { connect: { id: book3.id } } } }
-      },
-      create: {
-        email: "leonicola@hotmail.com",
-        firstName: "Popinjay",
-        id: "user_2lIRiBW1M9LAzpEKfgxHthtdtkg",
-        bookshelves: { create: { book: { connect: { id: book3.id } } } }
+    },
+    create: {
+      id: "user_2hDMCBi0KJXPmV4avSx5RuFQBgn",
+      email: "leonardonicolares@gmail.com",
+      firstName: "Leonardo",
+      lastName: "Nicola",
+      bookshelves: {
+        create: [
+          {
+            book: {
+              connect: { id: book1.id }
+            }
+          },
+          {
+            book: {
+              connect: { id: book3.id }
+            }
+          },
+          {
+            book: {
+              connect: { id: book4.id }
+            }
+          },
+          {
+            book: {
+              connect: { id: book2.id }
+            }
+          }
+        ]
       }
-    })
-  ]);
+    }
+  }),
+    // Create users
 
-  // Create users
-
-  logger.info("Dev Database seeded successfully");
+    logger.info("Dev Database seeded successfully");
 }
 
 if (process.env.NODE_ENV === "development") {
