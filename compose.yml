@@ -12,8 +12,24 @@ services:
       soketi:
         condition: service_started
     profiles: [prod]
+  db-integration:
+    image: postgres:16.4
+    container_name: integration
+    environment:
+      POSTGRES_DB: integration_db
+      POSTGRES_USER: integration_user
+      POSTGRES_PASSWORD: pass
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d integration_db -U integration_user" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5432:5432
+    profiles: [integration]
   db:
     image: postgres:16.4
+    container_name: ${DB_NAME}_db
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -27,6 +43,7 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
+    profiles: [prod, dev]
   soketi:
     image: quay.io/soketi/soketi:1.4-16-debian
     ports:
@@ -37,5 +54,6 @@ services:
       SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
       SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
       SOKETI_DEFAULT_APP_MAX_CONNS: 50
+    profiles: [prod, dev]
 volumes:
   pgdata:
