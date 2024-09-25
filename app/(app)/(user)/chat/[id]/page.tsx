@@ -19,9 +19,12 @@ export default async function Chat({ params }: { params: { id: string } }) {
   }
   const queryClient = new QueryClient();
 
-  const currentConversation = await getConversationById(params.id, user.id);
+  const { data: currentConversation, error } = await getConversationById(
+    params.id,
+    user.id
+  );
 
-  if (!currentConversation) {
+  if (!currentConversation || error) {
     redirect("/chat");
   }
 
@@ -34,10 +37,7 @@ export default async function Chat({ params }: { params: { id: string } }) {
   return (
     <div className="flex h-full w-full flex-col gap-4">
       <div className="flex h-12 min-h-12 w-full items-center border-b-2 px-4">
-        <p className="font-semibold">
-          {currentConversation.ConversationParticipants[0].User.firstName ??
-            currentConversation.name}
-        </p>
+        <p className="font-semibold">{currentConversation.name}</p>
       </div>
       <div className="flex min-h-0 w-full flex-auto flex-col gap-4 p-6">
         <HydrationBoundary state={dehydrate(queryClient)}>

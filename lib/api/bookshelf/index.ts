@@ -1,8 +1,12 @@
 import prisma from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { createBookSchema } from "@/lib/schemas/bookshelf";
+import { DefaultFetchResponse, toISOString, validateDate } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
+import { Book } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { z } from "zod";
 
 async function getUserBookshelf() {
   try {
@@ -24,16 +28,51 @@ async function getUserBookshelf() {
   }
 }
 
-async function addBookToBookshelf(bookId: string) {
+async function createBook({
+  release_date,
+  author,
+  title,
+  genre_id
+}: z.output<typeof createBookSchema>): Promise<DefaultFetchResponse<Book>> {
+  const { userId } = auth();
+  if (!userId) redirect("/login");
+
+  const isValid = validateDate(release_date, "DD/MM/YYYY");
+  if (!isValid) {
+    return { data: null, error: "Data inválida dayjs" };
+  }
   try {
-    const { userId } = auth();
-    if (!userId) redirect("/login");
+    const book = await prisma.book.create({
+      data: {
+        author,
+        title,
+        release_date: toISOString(release_date, "DD/MM/YYYY"),
+        genre_id: Number(genre_id)
+      }
+    });
+    return { data: book, error: null };
+  } catch (error) {
+    logger.error(error, `USER ${userId} - createBook(${title})`);
+    return {
+      data: null,
+      error: "Não foi possível criar um registro para este livro!"
+    };
+  }
+}
+
+async function addBookToBookshelf(
+  bookId: string
+): Promise<DefaultFetchResponse<string>> {
+  const { userId } = auth();
+  if (!userId) redirect("/login");
+  try {
     const isAlreadyInBookshelf = await prisma.bookshelf.findFirst({
       where: { user_id: userId, book_id: bookId },
       select: { id: true }
     });
     if (isAlreadyInBookshelf) {
       return {
+        data: null,
         error: "Livro já está na estante"
       };
     }
@@ -43,12 +82,14 @@ async function addBookToBookshelf(bookId: string) {
     });
     revalidatePath("/bookshelf", "page");
     return {
-      message: "Adicionado com sucesso!"
+      data: "Adicionado com sucesso!",
+      error: null
     };
   } catch (error) {
-    logger.error(error);
+    logger.error(error, `addBookToBookshelf(${bookId})`);
     return {
-      error: (error as Error).message
+      data: null,
+      error: "Não foi possível adicionar o livro sua estante, desculpe!"
     };
   }
 }
@@ -82,4 +123,4 @@ async function searchTrades(search: string) {
     };
   }
 }
-export { addBookToBookshelf, getUserBookshelf, searchTrades };
+export { addBookToBookshelf, createBook, getUserBookshelf, searchTrades };

@@ -1,6 +1,9 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 
+/**
+ * @description Basically uses useParams to return conversation ID
+ */
 function useConversation() {
   const params = useParams();
 

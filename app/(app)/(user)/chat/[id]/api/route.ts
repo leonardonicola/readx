@@ -1,5 +1,4 @@
 import { getMessagesByConversationId } from "@/lib/api/chat";
-import { logger } from "@/lib/logger";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -12,14 +11,9 @@ export async function GET(
       { status: 404 }
     );
   }
-  try {
-    const data = await getMessagesByConversationId(params.id);
-    return NextResponse.json({ data });
-  } catch (error) {
-    logger.error(error);
-    return NextResponse.json(
-      { error: "Não foi possível retornar informações dessa conversa" },
-      { status: 500 }
-    );
+  const { data, error } = await getMessagesByConversationId(params.id);
+  if (error) {
+    return NextResponse.json({ error }, { status: 500 });
   }
+  return NextResponse.json({ data });
 }

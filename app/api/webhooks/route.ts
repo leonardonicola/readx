@@ -1,6 +1,6 @@
 import prisma from "@/lib/db";
 import { logger } from "@/lib/logger";
-import { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
+import { clerkClient, UserJSON, WebhookEvent } from "@clerk/nextjs/server";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   if (!WEBHOOK_SECRET) {
     const ERROR_MSG =
       "Please add WEBHOOK_SECRET from Clerk Dashboard to your environment variables";
-    logger.error(ERROR_MSG);
+    logger.error(ERROR_MSG, "WEBHOOK: env variable not present");
     return NextResponse.json(ERROR_MSG, { status: 500 });
   }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   try {
     wh = new Webhook(WEBHOOK_SECRET);
   } catch (error) {
-    logger.error(error);
+    logger.error(error, "WEBHOOK: invalid secret");
     return NextResponse.json("WEBHOOK_SECRET isn't valid", { status: 500 });
   }
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature
     }) as WebhookEvent;
   } catch (err) {
-    logger.error(err);
+    logger.error(err, "WEBHOOK: Signature");
     return NextResponse.json("Error while verifying webhook signature", {
       status: 400
     });
@@ -61,10 +61,10 @@ export async function POST(req: Request) {
     });
   }
 
-  try {
-    switch (eventType) {
-      // Created with ID provider
-      case "user.created":
+  switch (eventType) {
+    // Created with ID provider
+    case "user.created":
+      try {
         await prisma.user.create({
           data: {
             email: userPrimaryEmail,
@@ -73,29 +73,29 @@ export async function POST(req: Request) {
             id: user.id
           }
         });
-        break;
-      // Updated with Clerk <Profile/>
-      case "user.updated":
-        await prisma.user.update({
-          data: {
-            firstName: user.first_name ?? user.id,
-            lastName: user.last_name ?? "",
-            updated_at: dayjs().toISOString()
-          },
-          where: { id: user.id }
-        });
-        break;
-      case "user.deleted":
-        await prisma.user.update({
-          data: { deleted_at: dayjs().toISOString() },
-          where: { id: user.id }
-        });
-    }
-  } catch (error) {
-    logger.error(error);
-    return NextResponse.json("Error while handling user event", {
-      status: 500
-    });
+      } catch (error) {
+        //Rollback
+        await clerkClient.users.deleteUser(user.id);
+        logger.error(error, "WEBHOOK: createUser()");
+      }
+      break;
+    // Updated with Clerk <Profile/>
+    case "user.updated":
+      await prisma.user.update({
+        data: {
+          firstName: user.first_name ?? user.id,
+          lastName: user.last_name ?? "",
+          updated_at: dayjs().toISOString()
+        },
+        where: { id: user.id }
+      });
+      break;
+    case "user.deleted":
+      await prisma.user.update({
+        data: { deleted_at: dayjs().toISOString() },
+        where: { id: user.id }
+      });
+      break;
   }
 
   revalidatePath("/profile", "page");

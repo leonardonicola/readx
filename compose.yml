@@ -1,32 +1,41 @@
 services:
-  postgres:
+  app:
+    image: leonardonicola/readx:1.0.0
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+      soketi:
+        condition: service_started
+    profiles: [prod]
+  db:
     image: postgres:16.4
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U $$DB_USER -d $$DB_NAME'"]
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
       interval: 5s
       timeout: 5s
       retries: 5
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
-    container_name: ${DB_NAME}
-    profiles: [db-only, default]
   soketi:
     image: quay.io/soketi/soketi:1.4-16-debian
     ports:
-      - "6001:6001"
-      - "9601:9601"
+      - 6001:6001
+      - 9601:9601
     environment:
-      SOKETI_DEBUG: 1
       SOKETI_DEFAULT_APP_ID: ${PUSHER_ID}
       SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
       SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
       SOKETI_DEFAULT_APP_MAX_CONNS: 50
-    profiles: [default]
 volumes:
   pgdata:
