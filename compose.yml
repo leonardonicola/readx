@@ -7,10 +7,11 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - db
-      - soketi
-    profiles: [ default ]
-    
+      db:
+        condition: service_healthy
+      soketi:
+        condition: service_started
+    profiles: [prod]
   db:
     image: postgres:16.4
     environment:
@@ -18,7 +19,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
     healthcheck:
-      test: [ "CMD-SHELL", "sh -c 'pg_isready -U $$DB_USER -d $$DB_NAME'" ]
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -26,7 +27,6 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
-    profiles: [ db-only, default ]
   soketi:
     image: quay.io/soketi/soketi:1.4-16-debian
     ports:
@@ -37,6 +37,5 @@ services:
       SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
       SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
       SOKETI_DEFAULT_APP_MAX_CONNS: 50
-    profiles: [ default ]
 volumes:
   pgdata:
