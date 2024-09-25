@@ -89,7 +89,7 @@ async function addBookToBookshelf(
     logger.error(error, `addBookToBookshelf(${bookId})`);
     return {
       data: null,
-      error: "Não foi possível adicionar o livro sua estante, desculpe!"
+      error: "Não foi possível adicionar o livro em sua estante, desculpe!"
     };
   }
 }
