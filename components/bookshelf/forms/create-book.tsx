@@ -30,8 +30,13 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-
-export function CreateBookForm({ genres, toggleOpen }: { genres: Genres, toggleOpen: (state: boolean) => void}) {
+export function CreateBookForm({
+  genres,
+  toggleOpen
+}: {
+  genres: Genres;
+  toggleOpen: (state: boolean) => void;
+}) {
   const { toast } = useToast();
   const { result, executeAsync, isExecuting, reset } = useAction(
     addBookToBookshelfWhileCreating
@@ -61,11 +66,10 @@ export function CreateBookForm({ genres, toggleOpen }: { genres: Genres, toggleO
 
   async function onBookCreate(values: z.output<typeof createBookSchema>) {
     const res = await executeAsync(values);
-    if (res?.serverError) {
+    if (res?.data?.error) {
       toast({
-        variant: "destructive",
         title: "Oopps...",
-        description: res.serverError
+        description: res.data.error
       });
       return;
     }
