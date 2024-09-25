@@ -87,7 +87,7 @@ describe("api/bookshelf", () => {
 
       const result = await addBookToBookshelf(FAKE_BOOK_ID);
 
-      expect(result).toEqual({ error: "Livro já está na estante" });
+      expect(result).toEqual({ error: "Livro já está na estante", data: null });
       expect(prismaMock.bookshelf.findFirst).toHaveBeenCalledWith({
         where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID },
         select: { id: true }
@@ -109,7 +109,7 @@ describe("api/bookshelf", () => {
 
       const result = await addBookToBookshelf("book-123");
 
-      expect(result).toEqual({ message: "Adicionado com sucesso!" });
+      expect(result).toEqual({ data: "Adicionado com sucesso!", error: null });
       expect(prismaMock.bookshelf.findFirst).toHaveBeenCalledWith({
         where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID },
         select: { id: true }
@@ -128,7 +128,10 @@ describe("api/bookshelf", () => {
 
       const result = await addBookToBookshelf("book-123");
 
-      expect(result).toEqual({ error: "Database error" });
+      expect(result).toEqual({
+        error: "Não foi possível adicionar o livro em sua estante, desculpe!",
+        data: null
+      });
     });
   });
 });
