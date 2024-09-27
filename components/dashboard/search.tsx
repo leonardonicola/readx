@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -31,7 +32,10 @@ export default function Search() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="flex items-start gap-4"
+      >
         <FormField
           control={form.control}
           name="search"
@@ -39,15 +43,18 @@ export default function Search() {
             <FormItem className="w-full">
               <FormControl>
                 <Input
-                  className="h-12 w-full text-lg"
+                  className="h-12 w-full rounded-none text-lg shadow-light"
                   placeholder="Procure sua nova experiência..."
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-start italic text-black" />
             </FormItem>
           )}
         />
+        <Button type="submit" variant="neutral" className="h-12 rounded-none">
+          PROCURAR
+        </Button>
       </form>
     </Form>
   );

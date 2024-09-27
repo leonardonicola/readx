@@ -36,7 +36,7 @@ export default async function Navbar({ className }: NavbarProps) {
         className
       )}
     >
-      <div className="flex h-full w-full max-w-screen-lg items-center px-4">
+      <div className="flex h-full w-full max-w-screen-lg items-center px-4 xl:px-0">
         <Sheet>
           <SheetTrigger asChild>
             <Button size="icon" className="lg:hidden">
