@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const searchSchema = z.object({
   search: z
-    .string({ invalid_type_error: "Ao menos 3 caracteres para pesquisa!" })
+    .string({
+      required_error: "Procure por algum título ou autor!",
+      invalid_type_error: "Procure por algum título ou autor!"
+    })
     .trim()
-    .min(3, "Ao menos 3 caracteres para pesquisa!")
+    .min(1, "Procure por algum título ou autor!")
 });
