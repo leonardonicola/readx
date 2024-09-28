@@ -32,7 +32,11 @@ interface Option {
   label: string;
 }
 
-export function AddToBookshelfForm({toggleOpen}: {toggleOpen: (state: boolean) => void}) {
+export function AddToBookshelfForm({
+  toggleOpen
+}: {
+  toggleOpen: (state: boolean) => void;
+}) {
   const [options, setOptions] = useState<Option[]>([]);
   const { toast } = useToast();
   const { result, executeAsync, isExecuting } = useAction(addBookToBookshelf);
@@ -62,11 +66,11 @@ export function AddToBookshelfForm({toggleOpen}: {toggleOpen: (state: boolean) =
       });
       return;
     }
-    if (res?.data?.message) {
+    if (res?.data?.data) {
       toast({
         variant: "success",
         title: "Sucesso!",
-        description: res.data.message
+        description: res.data.data
       });
       toggleOpen(false);
     }

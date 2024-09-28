@@ -14,7 +14,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "rounded-base dark:border-darkBorder font-base flex h-full w-full flex-col overflow-hidden border-2 border-border bg-white text-black",
+      "flex h-full w-full flex-col overflow-hidden rounded-base border-2 border-border bg-white font-base text-black dark:border-darkBorder",
       className
     )}
     {...props}
@@ -41,7 +41,7 @@ const CommandInput = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
   <div
-    className="dark:border-darkBorder flex items-center border-b-2 border-border px-3"
+    className="flex items-center border-b-2 border-border px-3 dark:border-darkBorder"
     cmdk-input-wrapper=""
   >
     <Search className="mr-2 h-4 w-4 shrink-0" />
@@ -91,7 +91,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "rounded-base [&_[cmdk-group-heading]]:font-heading overflow-hidden p-2 text-black/80 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-sm [&_[cmdk-group-heading]]:text-black/80",
+      "overflow-hidden rounded-base p-2 text-black/80 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-sm [&_[cmdk-group-heading]]:font-heading [&_[cmdk-group-heading]]:text-black/80",
       className
     )}
     {...props}
@@ -119,7 +119,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "rounded-base dark:outline-darkBorder relative flex cursor-default select-none items-center px-2 py-1.5 text-sm text-black outline outline-0 outline-border aria-selected:outline-2",
+      "relative flex cursor-default select-none items-center rounded-base px-2 py-1.5 text-sm text-black outline outline-0 outline-border aria-selected:outline-2 dark:outline-darkBorder",
       className
     )}
     {...props}

@@ -8,5 +8,5 @@ export const signInSchema = z.object({
   password: z
     .string({ required_error: "Senha é obrigatória" })
     .min(8, "Mínimo 8 caracteres")
-    .max(150, "Máximo 150 caracteres"),
+    .max(150, "Máximo 150 caracteres")
 });
