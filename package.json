@@ -10,7 +10,7 @@
     "lint": "next lint",
     "test:integration": ". ./scripts/run-integration.sh",
     "test:unit": "vitest --project unit",
-    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
+    "format": "next lint --fix && prettier --write */**/*.{js,json,ts,tsx,css} --ignore-path .gitignore",
     "migrate:dev": "dotenv -e .env.local -e .env -- pnpm dlx prisma migrate dev",
     "migrate:prod": "pnpm dlx prisma migrate deploy && pnpm start:prod",
     "seed": "tsx prisma/seed.ts"
@@ -71,6 +71,7 @@
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.6",
     "eslint-config-prettier": "^9.1.0",
@@ -86,5 +87,10 @@
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
     "vitest-mock-extended": "^2.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
