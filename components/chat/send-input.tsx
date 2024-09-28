@@ -17,7 +17,6 @@ export function SendMessageInput({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [content, setContent] = useState<string>("");
-  const queryClient = useQueryClient();
   const { conversationId } = useConversation();
   const { toast } = useToast();
   const { executeAsync } = useAction(sendMessage);

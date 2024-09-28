@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+
 import { logger } from "./lib/logger";
 
 const isPublicRoute = createRouteMatcher([
