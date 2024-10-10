@@ -1,6 +1,6 @@
 services:
   app:
-    image: leonardonicola/readx:1.0.0
+    image: leonardonicola/readx
     build: .
     env_file:
       - .env
@@ -20,7 +20,7 @@ services:
       POSTGRES_USER: integration_user
       POSTGRES_PASSWORD: pass
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d integration_db -U integration_user" ]
+      test: ["CMD-SHELL", "pg_isready -d integration_db -U integration_user"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -35,7 +35,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5

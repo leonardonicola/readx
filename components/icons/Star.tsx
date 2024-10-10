@@ -16,8 +16,8 @@ export function StarIcon({ className }: { className: string }) {
         >
           <path
             d="M 500 500 C 1000 1000 1000 1000 1751.7482517482517 297.2027972027972 C 1000 1000 1000 1000 1500 1500 C 1000 1000 1000 1000 241.25873869782527 1709.7902294238963 C 1000 1000 1000 1000 500 500"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></path>
         </g>
       </g>

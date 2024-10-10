@@ -17,7 +17,7 @@ export default async function Bookshelf() {
   const { genres } = await getGenres();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-screen-lg mx-auto pt-12">
       <BookshelfFeed />
       <CreateBookModal genres={genres} />
     </div>
