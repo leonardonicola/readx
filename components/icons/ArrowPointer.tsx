@@ -18,11 +18,11 @@ export function ArrowPointer({ className }: { className: string }) {
           d="M203.4265308380127 194.5Q122.4265308380127 294.5 408.9265308380127 400Q343.4265308380127 478.5 614.4265308380127 605.5 "
           stroke="black"
           strokeWidth="20"
-          marker-end="black"
+          markerEnd="black"
         ></path>
         <path
           d="M203.4265308380127 194.5Q122.4265308380127 294.5 408.9265308380127 400Q343.4265308380127 478.5 614.4265308380127 605.5 "
-          marker-end="url(#SvgjsMarker1192)"
+          markerEnd="url(#SvgjsMarker1192)"
         ></path>
       </g>
       <defs>
@@ -38,20 +38,20 @@ export function ArrowPointer({ className }: { className: string }) {
           <polyline
             points="0,5 5,2.5 0,0"
             fill="none"
-            stroke-width="3"
+            strokeWidth="3"
             stroke="#000"
-            stroke-linecap="round"
+            strokeLinecap="round"
             transform="matrix(1,0,0,1,1.6666666666666667,2.5)"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           ></polyline>
           <polyline
             points="0,5 5,2.5 0,0"
             fill="none"
-            stroke-width="1.6666666666666667"
+            strokeWidth="1.6666666666666667"
             stroke="hsl(50, 98%, 50%)"
-            stroke-linecap="round"
+            strokeLinecap="round"
             transform="matrix(1,0,0,1,1.6666666666666667,2.5)"
-            stroke-linejoin="round"
+            strokeLinejoin="round"
           ></polyline>
         </marker>
       </defs>

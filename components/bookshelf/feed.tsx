@@ -7,7 +7,7 @@ export default async function BookshelfFeed() {
 
   return (
     <>
-      <h1 className="my-12">Estes são seus livros disponíveis a troca:</h1>
+      <h1>Estes são seus livros disponíveis a troca:</h1>
       {bookshelves.length ? (
         <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {bookshelves.map((bookshelf) => (

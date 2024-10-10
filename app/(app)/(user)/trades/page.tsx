@@ -17,7 +17,7 @@ export default async function Trades({
   const { trades, error } = await searchTrades(searchParams.search);
   if (error) {
     return (
-      <div className="space-y-6 p-4">
+      <div className="space-y-6 p-4 max-w-screen-lg pt-12">
         <h1>Ooopss...</h1>
         <h2>{error}</h2>
       </div>
@@ -25,9 +25,9 @@ export default async function Trades({
   }
 
   return (
-    <>
+    <div className="max-w-screen-lg h-full w-full mx-auto pt-12">
       {trades?.length ? (
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
           {trades.map((trade) => (
             <Card
               key={trade.id}
@@ -63,6 +63,6 @@ export default async function Trades({
       ) : (
         <h1>Nenhuma trade disponível para o livro desejado!</h1>
       )}
-    </>
+    </div>
   );
 }
