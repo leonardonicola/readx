@@ -3,18 +3,7 @@ description: "Sets up the repo"
 runs:
   using: "composite"
   steps:
-    - uses: pnpm/action-setup@v4
-      name: Install pnpm
-      with:
-        version: 9
-        run_install: false
-
-    - uses: actions/setup-node@v4
-      name: Install Node.js
-      with:
-        node-version: 20
-        cache: "pnpm"
-
+    - uses: oven-sh/setup-bun@v2
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: bun install
