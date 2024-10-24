@@ -7,9 +7,9 @@ docker compose --profile integration up --build -d
 echo '🟡 - Waiting for database to be ready...'
 while [ "`docker inspect -f {{.State.Health.Status}} integration`" != "healthy" ]; do     sleep 2; done
 echo '🟢 - Database is ready!'
-pnpm prisma migrate dev
+bunx prisma migrate dev
 echo '🟡 - Waiting for migration to complete...'
-while ! pnpm prisma migrate status | grep -q "Database schema is up to date"; do
+while ! bunx prisma migrate status | grep -q "Database schema is up to date"; do
   sleep 2
 done
 echo '🟢 - Migration is complete!'
