@@ -12,6 +12,18 @@ services:
       soketi:
         condition: service_started
     profiles: [prod]
+
+  nginx:
+    image: nginx
+    build:
+      context: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      app:
+        condition: service_started
+    profiles: [prod]
+  # Integration tests DB 
   db-integration:
     image: postgres:16.4
     container_name: integration
