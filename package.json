@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "start:prod": "node server.js",
-    "lint": "tsc --noEmit && next lint",
+    "start:prod": "bun server.js",
+    "lint": "bun tsc --noEmit && next lint",
     "test:integration": ". ./scripts/run-integration.sh",
     "test:unit": "vitest --project unit",
-    "format": "pnpm lint --fix && prettier --write */**/*.{js,json,ts,tsx,css} --ignore-path .gitignore",
-    "migrate:dev": "dotenv -e .env.local -e .env -- pnpm dlx prisma migrate dev",
-    "migrate:prod": "pnpm dlx prisma migrate deploy && pnpm start:prod",
-    "seed": "tsx prisma/seed.ts"
+    "format": "bun lint --fix && prettier --write */**/*.{js,json,ts,tsx,css} --ignore-path .gitignore",
+    "migrate:dev": "bunx prisma migrate dev",
+    "migrate:prod": "bunx prisma migrate deploy && bun start:prod",
+    "seed": "bun prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/localizations": "^2.6.1",
