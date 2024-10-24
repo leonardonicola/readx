@@ -1,6 +1,6 @@
 # ReadX
 
-**ReadX** é uma plataforma de troca de livros desenvolvida com Next.js. O objetivo do projeto é facilitar a troca de livros entre usuários, permitindo que registrem os livros que possuem e busquem por livros de interesse em uma comunidade.
+**ReadX** é uma plataforma que visa facilitar a busca de livros usados e a troca dos mesmos entre os usuários do sistema, permitindo que registrem os livros de sua posse e possibilitando outros usuários oferecer seus livros como moeda de troca.
 
 ## Índice
 
@@ -18,22 +18,33 @@ ReadX é uma aplicação web desenvolvida para conectar amantes de livros e faci
 
 ## Funcionalidades
 
-- Cadastro e autenticação de usuários
-- Registro de livros disponíveis para troca
+- Cadastro e autenticação com email-senha ou Github
+- Registro de livros disponíveis para troca em sua _estante virtual_
 - Busca de livros por título, autor ou gênero
-- Sistema de mensagens para negociação de trocas
-- Perfil do usuário com histórico de trocas
-
+- Sistema de mensagens para negociação de trocas (chat)
+- Perfil do usuário personalizável
+  
 ## Tecnologias Utilizadas
 
-- [Next.js](https://nextjs.org/) - Meta framework para renderização SSR e muito mais
+- [Next.js](https://nextjs.org/) - Meta framework componente core do sistema
 - [React](https://reactjs.org/) - Biblioteca para construção de interfaces de usuário
-- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS
+- [Tailwind](https://tailwindcss.com/) - Framework CSS
 - [Prisma](https://www.prisma.io/) - ORM para banco de dados
 - [Clerk](https://clerk.com/) - Provedor de autenticação
 - [Pusher](https://pusher.com/) - Provedor de API realtime
+- [Soketi](https://github.com/soketi/soketi) - Servidor Websocket
+- [Terraform](https://www.terraform.io/) - Infrastructure as Code
+- [Bun](https://bun.sh/) - Runtime JS batteries included
+- [Nginx](https://nginx.org/en/) - Reverse proxy e web server
+- [Docker](https://www.docker.com/) - Ferramenta para conteinerização
 
 ## Instalação
+
+Antes de iniciar o projeto, tenha certeza que tem instalado em sua máquina:
+
+- Docker e Docker Compose
+- Bun
+- Terraform
 
 Para iniciar o projeto localmente, siga os passos abaixo:
 
@@ -52,7 +63,7 @@ Para iniciar o projeto localmente, siga os passos abaixo:
 3. Instale as dependências:
 
    ```bash
-   pnpm install
+   bun install
    ```
 
 4. Crie um arquivo `.env` e adicione as variáveis de ambiente necessárias baseado no `.env.example`
@@ -60,10 +71,10 @@ Para iniciar o projeto localmente, siga os passos abaixo:
 5. Execute o servidor de desenvolvimento:
 
    ```bash
-   pnpm dev
+   bun dev
    ```
 
-6. Acesse a aplicação em [http://localhost:3000](http://localhost:3000).
+6. Acesse a aplicação em [http://localhost:3000](http://localhost:3000) em modo dev ou rode `docker compose --profile=prod up --build` e acesse [http://localhost](http://localhost) na porta 80
 
 ## Uso
 
@@ -74,15 +85,9 @@ Após a instalação, você pode acessar a plataforma e começar a registrar seu
 Contribuições são bem-vindas! Para contribuir com o projeto:
 
 1. Faça um fork do repositório.
-2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`).
+2. Crie uma branch para sua feature (`git checkout -b feat/nome-da-feature`).
 3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`).
-4. Faça um push para a branch (`git push origin feature/nome-da-feature`).
+4. Faça um push para a branch (`git push origin feat/nome-da-feature`).
 5. Abra um Pull Request.
 
-## Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
-
 ---
-
-Sinta-se à vontade para personalizar este README conforme as necessidades específicas do seu projeto.
