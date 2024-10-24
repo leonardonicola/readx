@@ -21,7 +21,7 @@ jobs:
         name: Checkout
       - uses: ./.github/actions/build
       - name: Run unit tests
-        run: pnpm test:unit
+        run: bun test:unit
 env:
   DATABASE_URL: postgres://admin:SuperSecret123@localhost:5432/readx
   DB_USER: admin
