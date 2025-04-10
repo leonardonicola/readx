@@ -79,18 +79,13 @@ describe("api/bookshelf", () => {
         userId: FAKE_USER_ID
       });
 
-      prismaMock.bookshelf.findFirst.mockResolvedValueOnce({
-        id: "bookshelf-123",
-        book_id: FAKE_BOOK_ID,
-        user_id: FAKE_USER_ID
-      });
+      prismaMock.bookshelf.count.mockResolvedValueOnce(1);
 
       const result = await addBookToBookshelf(FAKE_BOOK_ID);
 
       expect(result).toEqual({ error: "Livro já está na estante", data: null });
-      expect(prismaMock.bookshelf.findFirst).toHaveBeenCalledWith({
-        where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID },
-        select: { id: true }
+      expect(prismaMock.bookshelf.count).toHaveBeenCalledWith({
+        where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID }
       });
       expect(prismaMock.bookshelf.create).not.toHaveBeenCalled();
     });
@@ -104,15 +99,14 @@ describe("api/bookshelf", () => {
 
       (auth as Mock).mockReturnValueOnce({ userId: FAKE_USER_ID });
 
-      prismaMock.bookshelf.findFirst.mockResolvedValue(null); // Book is not in bookshelf
+      prismaMock.bookshelf.count.mockResolvedValue(0); // Book is not in bookshelf
       prismaMock.bookshelf.create.mockResolvedValue(stubBook);
 
       const result = await addBookToBookshelf("book-123");
 
       expect(result).toEqual({ data: "Adicionado com sucesso!", error: null });
-      expect(prismaMock.bookshelf.findFirst).toHaveBeenCalledWith({
-        where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID },
-        select: { id: true }
+      expect(prismaMock.bookshelf.count).toHaveBeenCalledWith({
+        where: { user_id: FAKE_USER_ID, book_id: FAKE_BOOK_ID }
       });
       expect(prismaMock.bookshelf.create).toHaveBeenCalledWith({
         data: { book_id: FAKE_BOOK_ID, user_id: FAKE_USER_ID },
@@ -124,7 +118,7 @@ describe("api/bookshelf", () => {
     it("ERROR: should return an error message if an exception occurs", async () => {
       const fakeError = new Error("Database error");
       (auth as Mock).mockReturnValueOnce({ userId: FAKE_USER_ID });
-      prismaMock.bookshelf.findFirst.mockRejectedValueOnce(fakeError);
+      prismaMock.bookshelf.count.mockRejectedValueOnce(fakeError);
 
       const result = await addBookToBookshelf("book-123");
 
