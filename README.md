@@ -66,7 +66,7 @@ Para iniciar o projeto localmente, siga os passos abaixo:
    bun install
    ```
 
-4. Crie um arquivo `.env` e adicione as variáveis de ambiente necessárias baseado no `.env.example`
+4. Crie um arquivo `.env` e adicione as variáveis de ambiente necessárias baseado no `.env.example`. É necessário uma conta no Clerk para ter acesso as chaves descritas no `.env`.
 
 5. Execute o servidor de desenvolvimento:
 
@@ -74,7 +74,7 @@ Para iniciar o projeto localmente, siga os passos abaixo:
    bun dev
    ```
 
-6. Acesse a aplicação em [http://localhost:3000](http://localhost:3000) em modo dev ou rode `docker compose --profile=prod up --build` e acesse [http://localhost](http://localhost) na porta 80
+6. Acesse a aplicação em [http://localhost:3000](http://localhost:3000) em modo dev ou rode `docker compose --profile=dev up --build` e acesse [http://localhost](http://localhost) na porta 80
 
 ## Uso
 
