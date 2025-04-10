@@ -11,19 +11,9 @@ services:
         condition: service_healthy
       soketi:
         condition: service_started
-    profiles: [prod]
+    profiles: [dev]
 
-  nginx:
-    image: nginx
-    build:
-      context: ./nginx
-    ports:
-      - 80:80
-    depends_on:
-      app:
-        condition: service_started
-    profiles: [prod]
-  # Integration tests DB 
+  # Integration tests DB
   db-integration:
     image: postgres:16.4
     container_name: integration
@@ -55,17 +45,17 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
-    profiles: [prod, dev]
-  soketi:
-    image: quay.io/soketi/soketi:1.4-16-debian
+    profiles: [dev, db]
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
     ports:
-      - 6001:6001
-      - 9601:9601
+      - "8080:80"
     environment:
-      SOKETI_DEFAULT_APP_ID: ${PUSHER_ID}
-      SOKETI_DEFAULT_APP_KEY: ${NEXT_PUBLIC_PUSHER_KEY}
-      SOKETI_DEFAULT_APP_SECRET: ${PUSHER_SECRET}
-      SOKETI_DEFAULT_APP_MAX_CONNS: 50
-    profiles: [prod, dev]
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+    depends_on:
+      - db
+    profiles: [db]
 volumes:
   pgdata:
