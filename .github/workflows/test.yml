@@ -12,7 +12,7 @@ jobs:
       - uses: ./.github/actions/build
       - uses: ./.github/actions/docker-compose
       - name: Run integration tests
-        run: pnpm test:integration
+        run: bun test:integration
 
   unit-tests:
     runs-on: ubuntu-latest
