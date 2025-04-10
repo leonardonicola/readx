@@ -31,11 +31,8 @@ ReadX é uma aplicação web desenvolvida para conectar amantes de livros e faci
 - [Tailwind](https://tailwindcss.com/) - Framework CSS
 - [Prisma](https://www.prisma.io/) - ORM para banco de dados
 - [Clerk](https://clerk.com/) - Provedor de autenticação
-- [Pusher](https://pusher.com/) - Provedor de API realtime
-- [Soketi](https://github.com/soketi/soketi) - Servidor Websocket
 - [Terraform](https://www.terraform.io/) - Infrastructure as Code
 - [Bun](https://bun.sh/) - Runtime JS batteries included
-- [Nginx](https://nginx.org/en/) - Reverse proxy e web server
 - [Docker](https://www.docker.com/) - Ferramenta para conteinerização
 
 ## Instalação
