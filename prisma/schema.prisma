@@ -10,55 +10,17 @@ datasource db {
 }
 
 model User {
-  id                       String                     @id
-  email                    String                     @unique @db.VarChar(250)
-  phoneNumber              String?                    @db.VarChar(20)
-  firstName                String                     @db.VarChar(150)
-  lastName                 String?                    @db.VarChar(150)
-  created_at               DateTime                   @default(now())
-  deleted_at               DateTime?
-  updated_at               DateTime?
-  bookshelves              Bookshelf[]
-  ConversationParticipants ConversationParticipants[]
-  Message                  Message[]
+  id          String      @id
+  email       String      @unique @db.VarChar(250)
+  phoneNumber String?     @db.VarChar(20)
+  firstName   String      @db.VarChar(150)
+  lastName    String?     @db.VarChar(150)
+  created_at  DateTime    @default(now())
+  deleted_at  DateTime?
+  updated_at  DateTime?
+  bookshelves Bookshelf[]
 
   @@map("user")
-}
-
-// Basically the relationship table between user and messages
-model Conversation {
-  id                       String                     @id @default(uuid())
-  is_group                 Boolean                    @default(false)
-  name                     String?
-  created_at               DateTime                   @default(now())
-  ConversationParticipants ConversationParticipants[]
-  Message                  Message[]
-
-  @@map("conversation")
-}
-
-model ConversationParticipants {
-  id              String       @id @default(uuid())
-  conversation    Conversation @relation(fields: [conversation_id], references: [id])
-  conversation_id String
-  User            User         @relation(fields: [user_id], references: [id], onDelete: NoAction)
-  user_id         String
-  joined_at       DateTime     @default(now())
-
-  @@map("conversation_participants")
-}
-
-model Message {
-  id              String       @id @default(uuid())
-  Conversation    Conversation @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
-  Sender          User         @relation(fields: [user_id], references: [id], onDelete: NoAction)
-  content         String
-  created_at      DateTime     @default(now())
-  deleted_at      DateTime?
-  conversation_id String
-  user_id         String
-
-  @@map("message")
 }
 
 model Bookshelf {
