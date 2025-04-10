@@ -7,7 +7,6 @@
   ],
   "plugins": ["jsx-a11y", "perfectionist"],
   "overrides": [
-    // Configuration for TypeScript files
     {
       "rules": {
         "perfectionist/sort-imports": "error",
