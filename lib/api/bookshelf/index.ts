@@ -66,11 +66,10 @@ async function addBookToBookshelf(
   const { userId } = auth();
   if (!userId) redirect("/login");
   try {
-    const isAlreadyInBookshelf = await prisma.bookshelf.findFirst({
-      where: { user_id: userId, book_id: bookId },
-      select: { id: true }
+    const count = await prisma.bookshelf.count({
+      where: { user_id: userId, book_id: bookId }
     });
-    if (isAlreadyInBookshelf) {
+    if (count > 0) {
       return {
         data: null,
         error: "Livro já está na estante"
