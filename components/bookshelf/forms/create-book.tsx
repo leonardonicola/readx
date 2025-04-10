@@ -30,10 +30,7 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-export function CreateBookForm({
-  genres,
-  toggleOpen
-}: {
+export function CreateBookForm(props: {
   genres: Genres;
   toggleOpen: (state: boolean) => void;
 }) {
@@ -79,7 +76,7 @@ export function CreateBookForm({
         title: "Sucesso!",
         description: res.data.message
       });
-      toggleOpen(false);
+      props.toggleOpen(false);
     }
     reset();
   }
@@ -132,7 +129,7 @@ export function CreateBookForm({
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {genres.map((genre) => (
+                  {props.genres.map((genre) => (
                     <SelectItem key={genre.id} value={genre.id.toString()}>
                       {genre.name}
                     </SelectItem>

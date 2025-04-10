@@ -1,4 +1,4 @@
-import { StartConversation } from "@/components/trades/start-conversation";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,6 +8,7 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { searchTrades } from "@/lib/api/bookshelf";
+import Link from "next/link";
 
 export default async function Trades({
   searchParams
@@ -17,7 +18,7 @@ export default async function Trades({
   const { trades, error } = await searchTrades(searchParams.search);
   if (error) {
     return (
-      <div className="space-y-6 p-4 max-w-screen-lg pt-12">
+      <div className="max-w-screen-lg space-y-6 p-4 pt-12">
         <h1>Ooopss...</h1>
         <h2>{error}</h2>
       </div>
@@ -25,9 +26,9 @@ export default async function Trades({
   }
 
   return (
-    <div className="max-w-screen-lg h-full w-full mx-auto pt-12">
+    <div className="mx-auto h-full w-full max-w-screen-lg pt-12">
       {trades?.length ? (
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {trades.map((trade) => (
             <Card
               key={trade.id}
@@ -51,17 +52,24 @@ export default async function Trades({
                 </div>
               </CardContent>
               <CardFooter>
-                <StartConversation
-                  bookId={trade.book_id}
-                  bookTitle={trade.book.title}
-                  userId={trade.user_id}
-                />
+                <Button>TENHO INTERESSE</Button>
               </CardFooter>
             </Card>
           ))}
         </section>
       ) : (
-        <h1>Nenhuma trade disponível para o livro desejado!</h1>
+        <>
+          <h2>
+            Nenhum livro com este título está disponível para a troca
+            atualmente!
+          </h2>
+          <p className="pt-2">
+            <Link href="/bookshelf" className="underline hover:text-gray-800">
+              Cadastre
+            </Link>{" "}
+            seus livros para encontrar usuários interessados!
+          </p>
+        </>
       )}
     </div>
   );

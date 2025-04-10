@@ -37,15 +37,13 @@ const CreateBookModal = React.memo(({ genres }: ModalProps) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Adicione um novo livro a sua estante virtual
-          </DialogTitle>
-          <DialogDescription>
-            Livros adicionados aqui, estarão disponíveis para troca
+          <DialogTitle>Adicione um novo livro à sua estante</DialogTitle>
+          <DialogDescription className="text-gray-700">
+            Livros adicionados aqui estarão visíveis para troca.{" "}
           </DialogDescription>
         </DialogHeader>
-        <div className="w-full space-y-4">
-          <p className="font-medium">Adicione um livro existente</p>
+        <div className="w-full space-y-4 pt-4">
+          <p className="font-medium">Adicione um livro já registrado</p>
           <AddToBookshelfForm toggleOpen={toggleOpen} />
           <div className="relative">
             <Separator />

@@ -31,8 +31,8 @@ export default function BookCard({
   const [pending, startTransition] = useTransition();
   const { toast } = useToast();
 
-  async function handleDelete() {
-    await startTransition(async () => {
+  function handleDelete() {
+    startTransition(async () => {
       const { errors, message } = await deleteBookFromBookshelf(id);
       if (errors) {
         toast({ variant: "destructive", title: message });

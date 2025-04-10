@@ -81,20 +81,28 @@ export async function POST(req: Request) {
       break;
     // Updated with Clerk <Profile/>
     case "user.updated":
-      await prisma.user.update({
-        data: {
-          firstName: user.first_name ?? user.id,
-          lastName: user.last_name ?? "",
-          updated_at: dayjs().toISOString()
-        },
-        where: { id: user.id }
-      });
+      try {
+        await prisma.user.update({
+          data: {
+            firstName: user.first_name ?? user.id,
+            lastName: user.last_name ?? "",
+            updated_at: dayjs().toISOString()
+          },
+          where: { id: user.id }
+        });
+      } catch (error) {
+        logger.error(error, "WEBHOOK: updateUser()");
+      }
       break;
     case "user.deleted":
-      await prisma.user.update({
-        data: { deleted_at: dayjs().toISOString() },
-        where: { id: user.id }
-      });
+      try {
+        await prisma.user.update({
+          data: { deleted_at: dayjs().toISOString() },
+          where: { id: user.id }
+        });
+      } catch (error) {
+        logger.error(error, "WEBHOOK: deleteUser()");
+      }
       break;
   }
 
