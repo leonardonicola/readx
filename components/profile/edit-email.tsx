@@ -32,6 +32,7 @@ import { Input } from "../ui/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Tabs, TabsContent } from "../ui/tabs";
 import { useToast } from "../ui/use-toast";
+
 export function EditEmail({ currEmail }: { currEmail: string }) {
   const [currStep, setCurrStep] = useState<"form" | "confirmation">("form");
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
@@ -41,7 +42,7 @@ export function EditEmail({ currEmail }: { currEmail: string }) {
 
   const form = useForm<z.output<typeof emailEdit>>({
     resolver: zodResolver(emailEdit),
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       email: currEmail
     }
@@ -99,7 +100,7 @@ export function EditEmail({ currEmail }: { currEmail: string }) {
 
       // We need to modify in our e-mail
       const { emailAddress, id } = emailVerifyAttempt!;
-      const { error, message } = await modifyEmail({ emailAddress, id });
+      const { error, data } = await modifyEmail({ emailAddress, id });
       if (error) {
         // If error on db update, destroy email verify attempt
         await emailVerifyAttempt.destroy();
@@ -113,7 +114,7 @@ export function EditEmail({ currEmail }: { currEmail: string }) {
       }
       toast({
         title: "Sucesso!",
-        description: message,
+        description: data,
         variant: "success"
       });
       setModalOpen(false);
@@ -136,7 +137,7 @@ export function EditEmail({ currEmail }: { currEmail: string }) {
   return (
     <Dialog open={isModalOpen} onOpenChange={handleModalChange}>
       <DialogTrigger asChild>
-        <Button size="icon" variant="reverse">
+        <Button size="icon">
           <EditIcon />
         </Button>
       </DialogTrigger>

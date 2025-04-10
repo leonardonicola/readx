@@ -1,8 +1,11 @@
+import { UserDetails } from "@/components/profile/details";
 import { EditEmail } from "@/components/profile/edit-email";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { currentUser } from "@clerk/nextjs/server";
+import { EditIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
 async function UserProfilePage() {
@@ -14,7 +17,7 @@ async function UserProfilePage() {
   if (!primaryEmailAddress) redirect("/login");
 
   return (
-    <div className="h-fit w-full rounded-xl border-2 max-w-screen-lg mx-auto mt-12 animate-in zoom-in-75 fade-in duration-500 ">
+    <div className="mx-auto mt-12 h-fit w-full max-w-screen-lg rounded-xl border-2 duration-500 animate-in fade-in">
       <header className="relative h-72 min-h-fit w-full">
         <div className="h-2/5 w-full bg-main/10 md:h-1/2"></div>
         <div
@@ -46,24 +49,8 @@ async function UserProfilePage() {
       </header>
       <section className="flex h-2/3 flex-col px-4 pb-24">
         <h3 className="text-2xl font-bold">Detalhes</h3>
-        <p className="text-sm text-darkBg/70">Atualize seu perfil aqui.</p>
         <Separator className="my-8 h-0.5 bg-darkBg/10" />
-        <div className="flex flex-1 flex-col gap-8">
-          <div className="flex w-full flex-col justify-start md:w-5/6 md:flex-row">
-            <div className="w-full md:w-1/2">
-              <h4 className="text-base font-semibold">Endereço de email</h4>
-              <p className="text-sm text-darkBg/70">
-                Será seu e-mail principal.
-              </p>
-            </div>
-            <div className="flex w-full items-center justify-between md:w-1/2">
-              <p className="font-semibold">
-                {primaryEmailAddress.emailAddress}
-              </p>
-              <EditEmail currEmail={primaryEmailAddress.emailAddress} />
-            </div>
-          </div>
-        </div>
+        <UserDetails />
       </section>
     </div>
   );
