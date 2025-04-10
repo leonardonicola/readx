@@ -31,6 +31,16 @@ export const emailEdit = z.object({
     .email("E-mail inválido")
 });
 
+export const nameEditSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Nome muito curto!" })
+    .max(100, { message: "Nome muito longo!" })
+    .regex(/^[A-Za-zÀ-ÿ]+(?: [A-Za-zÀ-ÿ]+)+$/, {
+      message: "Digite nome e sobrenome apenas com letras."
+    })
+});
+
 export const emailAddressSchema = z.object({
   emailAddress: z
     .string({ required_error: "E-mail obrigatório" })
