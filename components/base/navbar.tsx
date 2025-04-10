@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { SignOutButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
-import { Book, BookIcon, MenuIcon } from "lucide-react";
+import { Book, BookIcon, DoorOpen, MenuIcon } from "lucide-react";
 import Link from "next/link";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -97,9 +97,6 @@ export default async function Navbar({ className }: NavbarProps) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile">Perfil</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/chat">Chats</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/bookshelf">Estante</Link>
