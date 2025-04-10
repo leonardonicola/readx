@@ -58,8 +58,9 @@ export function EditEmail({ currEmail }: { currEmail: string }) {
   async function onNextStep({ email }: z.output<typeof emailEdit>) {
     try {
       const emailResource = await user?.createEmailAddress({ email });
-      await emailResource?.prepareVerification({ strategy: "email_code" });
-      setEmailObj(emailResource);
+      if (!emailResource) return;
+      await emailResource.prepareVerification({ strategy: "email_code" });
+      setEmailObj(emailResource as EmailAddressResource);
       setCurrStep("confirmation");
     } catch (error) {
       // If email is linked to other user acccount

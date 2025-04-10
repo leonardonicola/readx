@@ -34,7 +34,7 @@ export function UserDetails() {
         <div className="flex w-full items-center justify-between md:w-1/2">
           {isEditingName ? (
             <EditNameInput
-              user={user}
+              fullName={user.fullName ?? ""}
               onCancel={toggleNameInput}
               onSuccess={changeName}
             />

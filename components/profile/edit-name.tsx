@@ -3,7 +3,6 @@
 import { modifyName } from "@/app/(app)/(user)/profile/[[...profile]]/actions";
 import { nameEditSchema } from "@/lib/schemas/profile";
 import { cn } from "@/lib/utils";
-import { UserData, UserResource } from "@clerk/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -23,7 +22,7 @@ import { Input } from "../ui/input";
 import { useToast } from "../ui/use-toast";
 
 export function EditNameInput(props: {
-  user: UserResource;
+  fullName: string;
   onCancel: () => void;
   onSuccess: (name: string) => void;
 }) {
@@ -34,12 +33,12 @@ export function EditNameInput(props: {
     resolver: zodResolver(nameEditSchema),
     mode: "onSubmit",
     defaultValues: {
-      name: props.user.fullName ?? ""
+      name: props.fullName ?? ""
     }
   });
 
   async function editName(payload: z.output<typeof nameEditSchema>) {
-    if (payload.name === props.user.fullName) {
+    if (payload.name === props.fullName) {
       props.onCancel();
       return;
     }
